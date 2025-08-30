@@ -13,12 +13,14 @@ class YiaMasBot {
   private sendButton: HTMLButtonElement;
   private typingIndicator: HTMLElement;
   private chatContainer: HTMLElement;
+  private examplePromptsContainer: HTMLElement;
 
   constructor() {
     this.initializeChat();
     this.cacheDOMElements();
     this.addEventListeners();
     this.displayWelcomeMessage();
+    this.displayExamplePrompts();
   }
 
   private initializeChat() {
@@ -48,12 +50,22 @@ class YiaMasBot {
       And you tell them, the famous flaming saganaki was invented right here in Greektown at a place called The Parthenon. It's closed now, God rest its soul, but its spirit lives on every time you hear someone yell "Opa!".
       
       **RESPONSE FORMATTING RULES:**
-      - Use HTML for formatting. Use \`<p>\` for paragraphs, \`<strong>\` for bolding, and \`<br>\` for line breaks. Do not use markdown like **.
-      - When you recommend a restaurant, you MUST format it like this:
-        1. Start with the restaurant name, like this: \`<p><strong>Greek Islands</strong></p>\`
-        2. In a new paragraph, give your wonderful description.
-        3. On a new line, add the dish recommendation: \`<p><strong>The Dish to Get:</strong> Your description of the amazing dish goes here.</p>\`
-        4. On another new line, add other details: \`<p><strong>Good to Know:</strong> Address, Price (\$ - \$\$\$\$), and Hours go here.</p>\`
+      - Use HTML for formatting. Use \`<p>\` for paragraphs, and \`<br>\` for line breaks. Do not use markdown like **.
+      - When you recommend a restaurant, you MUST wrap it in a card structure using this EXACT HTML format. Do not deviate!
+        <div class="recommendation-card">
+          <h3>Restaurant Name</h3>
+          <p>Your wonderful, personal description goes here. Make it sound like you're telling a family story!</p>
+          <div class="card-details">
+            <div class="dish-to-get">
+              <strong>The Dish to Get:</strong>
+              <p>Your description of the amazing dish goes here.</p>
+            </div>
+            <div class="good-to-know">
+              <strong>Good to Know:</strong>
+              <p>Address, Price (\\$ - \\$\\$\\$\\$), and Hours go here.</p>
+            </div>
+          </div>
+        </div>
 
       - When someone asks for food, you say "Opa! Let's get you some food!"
       - You MUST use the search tool to find the operating hours and a direct reservation link or the restaurant's official website. No excuses! A family has to eat. Present these links clearly.
@@ -83,6 +95,7 @@ class YiaMasBot {
     this.sendButton = document.getElementById("send-button") as HTMLButtonElement;
     this.typingIndicator = document.getElementById("typing-indicator")!;
     this.chatContainer = document.getElementById("chat-container")!;
+    this.examplePromptsContainer = document.getElementById("example-prompts-container")!;
   }
 
   private addEventListeners() {
@@ -96,8 +109,34 @@ class YiaMasBot {
     );
   }
 
+  private displayExamplePrompts() {
+    const prompts = [
+      "Find me a good gyro in Greektown",
+      "Anywhere with great lamb chops?",
+      "Where would four guys like?",
+    ];
+
+    prompts.forEach(promptText => {
+      const button = document.createElement("button");
+      button.classList.add("example-prompt");
+      button.setAttribute("role", "button");
+      button.textContent = promptText;
+      button.onclick = () => {
+        this.chatInput.value = promptText;
+        this.chatForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      };
+      this.examplePromptsContainer.appendChild(button);
+    });
+  }
+
   private async handleFormSubmit(event: Event) {
     event.preventDefault();
+    
+    if (this.examplePromptsContainer.firstChild) {
+      this.examplePromptsContainer.innerHTML = '';
+      this.examplePromptsContainer.style.padding = '0';
+    }
+
     const userMessage = this.chatInput.value.trim();
     if (!userMessage) return;
 
