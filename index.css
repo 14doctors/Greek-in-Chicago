@@ -10,6 +10,7 @@
   --border-color: #e0e0e0;
   --accent-color: #ffc107; /* A touch of gold */
   --font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --bot-font-family: 'Lora', serif;
   --border-radius: 12px;
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -99,10 +100,6 @@ body {
   word-wrap: break-word;
 }
 
-.message p {
-  margin: 0;
-}
-
 .user-message {
   align-self: flex-end;
   background-color: var(--user-bubble-bg);
@@ -110,11 +107,31 @@ body {
   border-bottom-right-radius: 4px;
 }
 
+.user-message p {
+  margin: 0;
+}
+
+
 .bot-message {
   align-self: flex-start;
   background-color: var(--bot-bubble-bg);
   color: var(--text-primary);
   border-bottom-left-radius: 4px;
+  font-family: var(--bot-font-family);
+  line-height: 1.6;
+}
+
+.bot-message p {
+  margin-bottom: 0.75rem;
+}
+
+.bot-message p:last-child {
+  margin-bottom: 0;
+}
+
+.bot-message strong {
+    color: var(--header-bg);
+    font-weight: 700;
 }
 
 .message-sources {
@@ -128,6 +145,7 @@ body {
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
+  font-family: var(--font-family); /* Keep UI elements in the main font */
 }
 
 .message-sources ul {
@@ -144,6 +162,7 @@ body {
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 700;
+  font-family: var(--font-family); /* Keep UI elements in the main font */
 }
 
 .message-sources li a:hover {

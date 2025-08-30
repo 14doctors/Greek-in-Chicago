@@ -26,6 +26,8 @@ class YiaMasBot {
       throw new Error("API_KEY environment variable not set");
     }
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    // FIX: Escaped the dollar signs in `($ - $$$$)` to `(\$ - \$\$\$\$)`.
+    // The original string was causing a syntax error because `${}` is used for variable interpolation in template literals.
     const systemInstruction = `You are "Yia Mas Bot," but you sound like you're from the movie "My Big Fat Greek Wedding." You are loud, loving, and you want everyone to eat. Your purpose is to find the absolute best Greek and Mediterranean restaurants in Chicago for anyone who asks. You're like a family member who knows all the best spots.
 
       Here is your family's list of the best places. You know these places like the back of your hand. You MUST recommend these places when they are a good fit for the user's request.
@@ -44,12 +46,18 @@ class YiaMasBot {
 
       **A little history for you:**
       And you tell them, the famous flaming saganaki was invented right here in Greektown at a place called The Parthenon. It's closed now, God rest its soul, but its spirit lives on every time you hear someone yell "Opa!".
+      
+      **RESPONSE FORMATTING RULES:**
+      - Use HTML for formatting. Use \`<p>\` for paragraphs, \`<strong>\` for bolding, and \`<br>\` for line breaks. Do not use markdown like **.
+      - When you recommend a restaurant, you MUST format it like this:
+        1. Start with the restaurant name, like this: \`<p><strong>Greek Islands</strong></p>\`
+        2. In a new paragraph, give your wonderful description.
+        3. On a new line, add the dish recommendation: \`<p><strong>The Dish to Get:</strong> Your description of the amazing dish goes here.</p>\`
+        4. On another new line, add other details: \`<p><strong>Good to Know:</strong> Address, Price (\$ - \$\$\$\$), and Hours go here.</p>\`
 
       - When someone asks for food, you say "Opa! Let's get you some food!"
-      - Your recommendations must include the restaurant's name, address, a price point ($ - $$$$), and operating hours.
-      - For every restaurant, you MUST recommend one specific, famous dish with a mouth-watering description, like you're telling your favorite cousin what to order.
       - You MUST use the search tool to find the operating hours and a direct reservation link or the restaurant's official website. No excuses! A family has to eat. Present these links clearly.
-      - If a restaurant is cash only, you MUST highlight this on a new line by saying "<b><u>Don't forget the cash, it's cash only!</u></b>". Make sure you check this with the search tool.
+      - If a restaurant is cash only, you MUST highlight this on a new line by saying "<p><b><u>Don't forget the cash, it's cash only!</u></b></p>". Make sure you check this with the search tool.
       - If the user asks about anything other than Greek or Mediterranean food in Chicago, you politely but firmly refuse, like a loving aunt telling them "No, no, you need real food. Let me find you some nice lamb." Then steer them back to Greek food.
       - If the user gets sassy, complains, or asks a silly off-topic question, you MUST answer back with a famous comeback quote from the movie. Then, try to bring the conversation back to food.
         - For a complaint: "Put some Windex on it."
@@ -57,6 +65,8 @@ class YiaMasBot {
         - If they ask who you are or something similar: "There are two kinds of people: Greeks, and those who wish they were Greek."
       - Your tone is always warm, welcoming, and maybe a little dramatic.`;
       
+    // FIX: `systemInstruction` and `tools` must be properties of the `config` object
+    // for `ai.chats.create`.
     this.chat = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
@@ -100,7 +110,7 @@ class YiaMasBot {
       const botMessageText = response.text;
       const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
       
-      let htmlResponse = `<p>${botMessageText.replace(/\n/g, '<br>')}</p>`;
+      let htmlResponse = botMessageText; // The model will provide the HTML structure
 
       if (groundingChunks && groundingChunks.length > 0) {
         const validLinks = groundingChunks.filter(chunk => chunk.web && chunk.web.uri);
@@ -133,7 +143,14 @@ class YiaMasBot {
     messageElement.innerHTML = message; // Use innerHTML to render links and formatting
     
     this.chatHistory.appendChild(messageElement);
-    this.scrollToBottom();
+    
+    if (sender === 'bot') {
+      // When the bot provides an answer, scroll to the beginning of that message.
+      messageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // For user's messages, scroll to the bottom of the chat.
+      this.scrollToBottom();
+    }
   }
 
   private setLoading(isLoading: boolean) {
