@@ -99,6 +99,10 @@ body {
   word-wrap: break-word;
 }
 
+.message p {
+  margin: 0;
+}
+
 .user-message {
   align-self: flex-end;
   background-color: var(--user-bubble-bg);
@@ -111,6 +115,39 @@ body {
   background-color: var(--bot-bubble-bg);
   color: var(--text-primary);
   border-bottom-left-radius: 4px;
+}
+
+.message-sources {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.message-sources h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.message-sources ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.message-sources li a {
+  color: var(--user-bubble-bg);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.message-sources li a:hover {
+  text-decoration: underline;
 }
 
 .app-footer {
@@ -133,13 +170,20 @@ body {
   font-size: 1rem;
   font-family: var(--font-family);
   background-color: var(--primary-bg);
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
+  color: #000;
 }
 
 #chat-input:focus {
   outline: none;
   border-color: var(--user-bubble-bg);
 }
+
+#chat-input:disabled {
+    background-color: #eceff1;
+    cursor: not-allowed;
+}
+
 
 #send-button {
   display: flex;
@@ -162,6 +206,13 @@ body {
 #send-button:disabled {
     background-color: #90caf9;
     cursor: not-allowed;
+}
+
+#typing-indicator {
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  align-self: flex-start;
 }
 
 #typing-indicator .dot-flashing {
