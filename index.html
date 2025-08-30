@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yia Mas Bot | Chicago Greek & Mediterranean Dining Guide</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.16.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <main id="app-container">
+      <header class="app-header">
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 5c-5.5 0-10 2.2-10 5s4.5 5 10 5 10-2.2 10-5-4.5-5-10-5Z"/><path d="M12 10c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3Z"/></svg>
+          <h1>Yia Mas Bot</h1>
+        </div>
+        <p class="subtitle">Your guide to Greek & Mediterranean dining in Chicago</p>
+      </header>
+      <div id="chat-container" role="log" aria-live="polite">
+        <div id="chat-history"></div>
+        <div id="typing-indicator" class="message bot-message" style="display: none;">
+          <div class="dot-flashing"></div>
+        </div>
+      </div>
+      <footer class="app-footer">
+        <form id="chat-form" aria-label="Chat input form">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Ask for a neighborhood or craving..."
+            aria-label="Your message"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" id="send-button" aria-label="Send message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          </button>
+        </form>
+      </footer>
+    </main>
+    <script type="module" src="index.tsx"></script>
+  </body>
+</html>

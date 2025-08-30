@@ -1,0 +1,211 @@
+:root {
+  --primary-bg: #f7f9fc;
+  --secondary-bg: #ffffff;
+  --header-bg: #0d47a1; /* Deep blue */
+  --user-bubble-bg: #1976d2; /* Bright blue */
+  --bot-bubble-bg: #e3f2fd; /* Light blue */
+  --text-primary: #212121;
+  --text-secondary: #f0f4f8;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+  --accent-color: #ffc107; /* A touch of gold */
+  --font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#app-container {
+  width: 100%;
+  max-width: 700px;
+  height: 90vh;
+  max-height: 800px;
+  background-color: var(--secondary-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-header {
+  background-color: var(--header-bg);
+  color: var(--text-secondary);
+  padding: 1.25rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-header .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.app-header .logo .icon {
+    color: var(--accent-color);
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.app-header .subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+
+#chat-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+#chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message {
+  max-width: 80%;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius);
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: var(--user-bubble-bg);
+  color: var(--text-secondary);
+  border-bottom-right-radius: 4px;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: var(--bot-bubble-bg);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+}
+
+.app-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+}
+
+#chat-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#chat-input {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background-color: var(--primary-bg);
+  transition: border-color 0.2s;
+}
+
+#chat-input:focus {
+  outline: none;
+  border-color: var(--user-bubble-bg);
+}
+
+#send-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: var(--user-bubble-bg);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#send-button:hover, #send-button:focus {
+  background-color: #1565c0; /* Darker blue */
+}
+
+#send-button:disabled {
+    background-color: #90caf9;
+    cursor: not-allowed;
+}
+
+#typing-indicator .dot-flashing {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+#typing-indicator .dot-flashing::before, #typing-indicator .dot-flashing::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+#typing-indicator .dot-flashing::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+#typing-indicator .dot-flashing::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: #81a2ce;
+  }
+  50%, 100% {
+    background-color: #d1dff0;
+  }
+}
